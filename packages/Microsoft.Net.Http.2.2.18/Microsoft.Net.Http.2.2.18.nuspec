@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2013/01/nuspec.xsd">
   <metadata minClientVersion="2.5">
     <id>Microsoft.Net.Http</id>
@@ -21,6 +21,7 @@ Supported Platforms:
 - Silverlight 4 and 5
 - Portable Class Libraries</description>
     <summary>This package provides a programming interface for modern HTTP/REST based applications.</summary>
+    <releaseNotes />
     <copyright>Copyright © Microsoft Corporation</copyright>
     <language>en-US</language>
     <tags>BCL HTTP REST Microsoft System Networking</tags>

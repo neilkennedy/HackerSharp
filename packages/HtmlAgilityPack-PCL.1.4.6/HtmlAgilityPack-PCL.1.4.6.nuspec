@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>HtmlAgilityPack-PCL</id>
@@ -10,5 +10,8 @@
     <projectUrl>https://github.com/Deathspike/HtmlAgilityPack-PCL</projectUrl>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <description>A light abstraction of HtmlAgilityPack implementing the minimal functions to work with Linq under most PCL configurations.</description>
+    <releaseNotes />
+    <copyright />
+    <language />
   </metadata>
 </package>
