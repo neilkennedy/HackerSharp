@@ -75,42 +75,42 @@ namespace HackerSharpAPI
 
             for (int i = 0; i < rows.Count; i++)
             {
-                var row = rows[i];
-                var tableData = row.Descendants("td");
-
-                if (tableData != null && tableData.Count() > 0)
+                try
                 {
-                    if (tableData.Count(x => x.Attributes["class"] != null && x.Attributes["class"].Value.Contains("title")) > 0)
+                    var row = rows[i];
+                    var tableData = row.Descendants("td");
+                    Debug.WriteLine(i);
+
+                    if (tableData != null && tableData.Count() > 0)
                     {
-                        if (i == rows.Count - 1)
+                        if (tableData.Count(x => x.Attributes["class"] != null && x.Attributes["class"].Value.Contains("title")) > 0)
                         {
-                            nextUrl = row.Descendants("a").ToList()[0].Attributes["href"].Value;
-                            break;
+                            if (i == rows.Count - 1)
+                            {
+                                nextUrl = row.Descendants("a").ToList()[0].Attributes["href"].Value;
+                                break;
+                            }
+
+                            newsItem = new HackerItem();
+                            ParsingHelpers.ParseUrlTitle(newsItem, row.Descendants("a").ToList());
+                            ParsingHelpers.ParseHost(newsItem, row.Descendants("span").ToList());
                         }
-
-                        //title
-
-                        var link = row.Descendants("a").ToList()[1];
-                        newsItem = new HackerItem
+                        else if (tableData.Count(x => x.Attributes["class"] != null && x.Attributes["class"].Value.Contains("subtext")) > 0)
                         {
-                            URL = link.Attributes["href"].Value,
-                            Title = link.InnerText,
-                            Host = row.Descendants("span").Where(x => x.Attributes["class"] != null && x.Attributes["class"].Value.Contains("comhead")).ToList()[0].InnerText.Trim().Replace("(", "").Replace(")", "")
-                        };
-                    }
-                    else if (tableData.Count(x => x.Attributes["class"] != null && x.Attributes["class"].Value.Contains("subtext")) > 0)
-                    {
-                        //points & user
-                        var links = row.Descendants("a");
-                        var itemLink = links.Where(x => x.Attributes["href"].Value.Contains("item")).ToList()[0];
+                            //points & user
+                            var links = row.Descendants("a").ToList();
 
-                        newsItem.Points = row.Descendants("span").ToList()[0].InnerText.Replace(" points", "").Replace(" point", "");
-                        newsItem.User = links.Where(x => x.Attributes["href"].Value.Contains("user")).ToList()[0].InnerText;
-                        newsItem.ID = itemLink.Attributes["href"].Value.Replace("item?id=", "");
-                        newsItem.CommentCount = itemLink.InnerText == "discuss" ? "0" : itemLink.InnerText.Replace(" comments", "");
+                            ParsingHelpers.ParsePoints(newsItem, row.Descendants("span").ToList());
+                            ParsingHelpers.ParseUser(newsItem, links);
+                            ParsingHelpers.ParseIDAndCommentCount(newsItem, links);
 
-                        items.Add(newsItem);
+                            items.Add(newsItem);
+                        }
                     }
+                }
+                catch (Exception e)
+                {
+                    throw new HackerException("Could not parse the news feed. See inner exception for details", e);
                 }
             }
 
