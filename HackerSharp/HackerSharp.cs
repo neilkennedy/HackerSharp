@@ -51,7 +51,12 @@ namespace HackerSharpAPI
         /// </summary>
         public async Task<List<HackerItem>> Newest(bool nextPage = false)
         {
-            var doc = await Load(newestUrl);
+			HtmlDocument doc;
+			if (nextPage && nextUrl != null) {
+				doc = await Load (nextUrl);
+			} else {
+				doc = await Load (newestUrl);
+			}
 
             var mainTable = doc.DocumentNode.Descendants("table").ToList()[2];
             var rows = mainTable.Descendants("tr").ToList();
